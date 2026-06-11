@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fffffe;
+  --surface: #eaeff3;
+  --foreground: #1f2937;
+  --primary: #1d50a2;
+  --accent: #a0d8ef;
+  --muted-foreground: #64748b;
+  --border: #dbe4ec;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --font-sans: var(--font-inter), var(--font-noto-sans-jp), ui-sans-serif,
+    system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+/* shiki code block */
+.code-block pre {
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  border: 1px solid var(--border);
+}
