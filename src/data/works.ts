@@ -13,6 +13,8 @@ export type Work = {
   role: string;
   period?: string;
   status: "released" | "wip";
+  /** トップページに表示するスクリーンショット (public/ 配下のパス) */
+  image?: string;
   tech: string[];
   url?: string;
   repo?: string;
@@ -35,6 +37,7 @@ export const works: Work[] = [
       "千葉工業大学文化会所属「ソフトメディア研究会」の公式ウェブサイト。Next.js (App Router) + TypeScript + Tailwind CSS のフロントエンドと、PHP / MySQL による自作 CMS を組み合わせたハイブリッド構成で、さくらインターネット上で運用しています。記事の作成・公開は CMS の管理画面から行え、GitHub Actions による自動デプロイ・自動バックアップまで含めた運用基盤を整備しました。",
     role: "設計・実装・運用",
     status: "released",
+    image: "/works/sofumeweb.png",
     tech: [
       "Next.js (App Router)",
       "TypeScript",
@@ -61,6 +64,7 @@ export const works: Work[] = [
       "「放課後ゆる電波スタジオ」の公式ウェブサイト。News・Events・Discography の各コンテンツを、指定フォルダに Markdown ファイルを追加するだけで更新できる「Markdown CMS」方式で設計しました。非エンジニアのメンバーでも frontmatter 付きの Markdown を書くだけで記事を公開でき、運用コストを最小化しています。本ポートフォリオサイトのデザインの基にもなっています。",
     role: "設計・実装・運用",
     status: "released",
+    image: "/works/yurudennet.png",
     tech: [
       "Next.js (App Router)",
       "TypeScript",
@@ -85,6 +89,7 @@ export const works: Work[] = [
       "サークルの成果物として制作した、ブラウザで遊べる花札「こいこい」ゲーム。フレームワークを使わず、素の HTML5 / CSS3 / JavaScript (ES Modules) のみで SPA として実装しました。山札・手札・場札の状態管理、役判定・得点計算、CPU の簡易 AI、チュートリアル機能までを自前で実装しています。MIT ライセンスでソースコードを公開中です。",
     role: "ゲームロジック・UI 実装",
     status: "released",
+    image: "/works/sofuhana.png",
     tech: [
       "HTML5",
       "CSS3",

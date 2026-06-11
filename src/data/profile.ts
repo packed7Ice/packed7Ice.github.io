@@ -1,5 +1,6 @@
 export const profile = {
-  name: "Yorikawa Aise",
+  nameJa: "依川 愛瀬",
+  nameEn: "Yorikawa Aise",
   // public/icon.png を置いて "/icon.png" に変えるとローカル画像になる
   avatar: "https://avatars.githubusercontent.com/u/108216674?v=4",
   intro: [
@@ -10,25 +11,38 @@ export const profile = {
   x: "https://x.com/yorikawaaise",
 };
 
-export type SkillCategory = { name: string; items: string[] };
+// level: 習得練度 (1〜5)。各カテゴリ内で level の降順に表示される。
+export type Skill = { name: string; level: number };
+export type SkillCategory = { name: string; items: Skill[] };
 
 export const skillCategories: SkillCategory[] = [
   {
     name: "Languages",
-    items: ["TypeScript", "JavaScript", "HTML5 / CSS3", "PHP", "Python"],
+    items: [
+      { name: "TypeScript", level: 5 },
+      { name: "JavaScript", level: 5 },
+      { name: "HTML5 / CSS3", level: 4 },
+      { name: "PHP", level: 3 },
+      { name: "Python", level: 3 },
+    ],
   },
   {
     name: "Frontend",
-    items: ["React", "Next.js (App Router)", "Tailwind CSS", "Vite"],
+    items: [
+      { name: "React", level: 5 },
+      { name: "Next.js (App Router)", level: 5 },
+      { name: "Tailwind CSS", level: 4 },
+      { name: "Vite", level: 3 },
+    ],
   },
   {
     name: "Backend / Infra",
     items: [
-      "MySQL",
-      "GitHub Actions (CI/CD)",
-      "GitHub Pages",
-      "AWS Amplify",
-      "さくらインターネット",
+      { name: "GitHub Actions (CI/CD)", level: 4 },
+      { name: "GitHub Pages", level: 4 },
+      { name: "MySQL", level: 3 },
+      { name: "AWS Amplify", level: 3 },
+      { name: "さくらインターネット", level: 3 },
     ],
   },
 ];

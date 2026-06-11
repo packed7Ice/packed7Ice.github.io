@@ -1,94 +1,178 @@
-import WorkCard from "@/components/WorkCard";
-import { releasedWorks, wipWorks } from "@/data/works";
+import Link from "next/link";
+import FadeIn from "@/components/FadeIn";
+import { profile, skillCategories } from "@/data/profile";
+import { releasedWorks } from "@/data/works";
+
+const SECTION =
+  "flex min-h-[calc(100dvh-3.5rem)] snap-start scroll-mt-14 items-center";
+
+function LevelDots({ level }: { level: number }) {
+  return (
+    <span className="flex gap-1" aria-label={`習得練度 ${level} / 5`}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <span
+          key={n}
+          className={`h-2 w-2 rounded-full ${
+            n <= level ? "bg-primary" : "bg-border"
+          }`}
+        />
+      ))}
+    </span>
+  );
+}
 
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-surface to-background">
-        <div className="mx-auto max-w-5xl px-4 py-20 sm:px-6 sm:py-28">
-          <p className="text-sm font-medium tracking-widest text-primary">
-            PORTFOLIO
-          </p>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Yorikawa Aise
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            ウェブサイト開発を中心に活動しています。サークルの公式サイトや
-            ブラウザゲームなど、企画から実装・運用までを一貫して手がけた
-            制作物をまとめています。
-          </p>
-          <div className="mt-8 flex gap-3">
-            <a
-              href="#works"
-              className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-85"
-            >
-              Works を見る
-            </a>
-            <a
-              href="https://github.com/packed7Ice"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-border bg-white px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-primary"
-            >
-              GitHub
-            </a>
-          </div>
+      {/* 1. Profile */}
+      <section
+        id="profile"
+        className={`${SECTION} bg-gradient-to-b from-surface to-background`}
+      >
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+          <FadeIn>
+            <div className="flex flex-col items-center gap-10 text-center sm:flex-row sm:gap-14 sm:text-left">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={profile.avatar}
+                alt={`${profile.nameJa} のアイコン`}
+                width={224}
+                height={224}
+                className="h-44 w-44 shrink-0 rounded-full border-4 border-white shadow-lg ring-2 ring-accent sm:h-56 sm:w-56"
+              />
+              <div>
+                <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
+                  {profile.nameJa}
+                </h1>
+                <p className="mt-3 text-lg tracking-widest text-muted-foreground/70 sm:text-xl">
+                  {profile.nameEn}
+                </p>
+                <div className="mt-6 max-w-xl space-y-1.5 text-base leading-relaxed text-muted-foreground">
+                  {profile.intro.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+                <div className="mt-8 flex justify-center gap-3 sm:justify-start">
+                  <a
+                    href={profile.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full bg-primary px-7 py-3 text-base font-medium text-white transition-opacity hover:opacity-85"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href={profile.x}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-border bg-white px-7 py-3 text-base font-medium text-foreground transition-colors hover:border-accent hover:text-primary"
+                  >
+                    X (Twitter)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* Works */}
-      <section id="works" className="scroll-mt-14">
-        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-          <h2 className="text-2xl font-bold text-foreground">Works</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            公開済みの制作物
-          </p>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {releasedWorks.map((work) => (
-              <WorkCard key={work.slug} work={work} />
+      {/* 2. Skills */}
+      <section id="skills" className={SECTION}>
+        <div className="mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
+          <FadeIn>
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+              Skills
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground">
+              使用できる技術(各カテゴリ内は習得練度順)
+            </p>
+          </FadeIn>
+          <div className="mx-auto mt-12 grid w-fit gap-x-16 gap-y-10 text-left sm:grid-cols-3">
+            {skillCategories.map((category, i) => (
+              <FadeIn key={category.name} delay={i * 150}>
+                <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
+                  {category.name}
+                </h3>
+                <ul className="mt-5 space-y-3.5">
+                  {[...category.items]
+                    .sort((a, b) => b.level - a.level)
+                    .map((item) => (
+                      <li key={item.name}>
+                        <span className="text-base font-medium text-foreground">
+                          {item.name}
+                        </span>
+                        <span className="mt-1.5 block">
+                          <LevelDots level={item.level} />
+                        </span>
+                      </li>
+                    ))}
+                </ul>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* WIP */}
-      <section id="wip" className="scroll-mt-14 bg-surface">
-        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-          <h2 className="text-2xl font-bold text-foreground">Now Making</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            制作中のプロジェクト
-          </p>
-          {wipWorks.length > 0 ? (
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {wipWorks.map((work) => (
-                <WorkCard key={work.slug} work={work} />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-8 rounded-2xl border border-dashed border-border bg-white/60 p-10 text-center text-sm text-muted-foreground">
-              現在制作中のプロジェクトは、公開準備ができ次第ここに掲載します。
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* About */}
-      <section id="about" className="scroll-mt-14">
-        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-          <h2 className="text-2xl font-bold text-foreground">About</h2>
-          <div className="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted-foreground">
-            <p>
-              千葉工業大学のサークル「ソフトメディア研究会」を中心に、
-              ウェブサイトの設計・実装から CI/CD・バックアップなどの
-              運用基盤の整備までを手がけています。
-            </p>
-            <p>
-              主な技術スタック: TypeScript / React / Next.js / Tailwind CSS。
-              用途に応じて PHP + MySQL の CMS 開発や、フレームワークを使わない
-              素の JavaScript でのゲーム開発も行います。
-            </p>
+      {/* 3. Works */}
+      <section id="works" className={`${SECTION} bg-surface`}>
+        <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
+          <FadeIn>
+            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+              Works
+            </h2>
+            <p className="mt-3 text-base text-muted-foreground">主な制作物</p>
+          </FadeIn>
+          <div className="mt-10 space-y-10">
+            {releasedWorks.map((work, i) => (
+              <FadeIn key={work.slug} delay={i * 150}>
+                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
+                  {work.image && (
+                    <Link
+                      href={`/works/${work.slug}/`}
+                      className="block w-full shrink-0 sm:w-2/5"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={work.image}
+                        alt={`${work.title} のスクリーンショット`}
+                        className="aspect-video w-full rounded-lg object-cover object-top shadow-md transition-transform hover:scale-[1.02]"
+                      />
+                    </Link>
+                  )}
+                  <div className="min-w-0">
+                    <h3 className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
+                      <Link
+                        href={`/works/${work.slug}/`}
+                        className="transition-colors hover:text-primary"
+                      >
+                        {work.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                      {work.summary}
+                    </p>
+                    <p className="mt-2.5 text-xs text-muted-foreground/70 sm:text-sm">
+                      {work.tech.join(" / ")}
+                    </p>
+                    <Link
+                      href={`/works/${work.slug}/`}
+                      className="mt-3 inline-block text-sm text-primary underline-offset-4 hover:underline"
+                    >
+                      詳しく見る →
+                    </Link>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
           </div>
+          <FadeIn delay={450} className="mt-10 text-center">
+            <Link
+              href="/making/"
+              className="text-sm text-primary underline-offset-4 hover:underline"
+            >
+              制作中のプロジェクト (WIP) を見る →
+            </Link>
+          </FadeIn>
         </div>
       </section>
     </>

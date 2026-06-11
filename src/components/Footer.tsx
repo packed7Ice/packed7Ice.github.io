@@ -17,7 +17,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="transition-colors hover:text-primary"
           >
-            X (Twitter)
+            Twitter
           </a>
         </div>
         <p>© {new Date().getFullYear()} Yorikawa Aise</p>

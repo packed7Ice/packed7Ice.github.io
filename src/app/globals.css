@@ -22,6 +22,13 @@
     system-ui, sans-serif;
 }
 
+/* セクション単位のスクロールスナップ(トップページの各セクションが snap-start を持つ。
+   snap point を持たないページは通常スクロールのまま) */
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);

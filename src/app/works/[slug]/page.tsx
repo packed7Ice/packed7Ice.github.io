@@ -46,12 +46,12 @@ export default async function WorkPage({
         </h1>
         {work.status === "wip" && (
           <span className="mt-1 shrink-0 rounded-full bg-accent/40 px-3 py-1 text-xs font-medium text-primary">
-            制作中
+            WIP
           </span>
         )}
       </div>
 
-      <dl className="mt-6 grid gap-x-8 gap-y-2 rounded-2xl bg-surface p-5 text-sm sm:grid-cols-[auto_1fr]">
+      <dl className="mt-7 grid gap-x-8 gap-y-2.5 border-l-2 border-accent pl-5 text-sm sm:grid-cols-[auto_1fr] sm:text-base">
         <dt className="font-medium text-foreground">担当</dt>
         <dd className="text-muted-foreground">{work.role}</dd>
         {work.url && (
@@ -90,17 +90,12 @@ export default async function WorkPage({
         {work.description}
       </p>
 
-      <h2 className="mt-10 text-xl font-bold text-foreground">技術スタック</h2>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {work.tech.map((t) => (
-          <span
-            key={t}
-            className="rounded-md border border-border bg-white px-2.5 py-1 text-xs text-muted-foreground"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
+      <h2 className="mt-10 text-xl font-bold text-foreground sm:text-2xl">
+        技術スタック
+      </h2>
+      <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+        {work.tech.join(" / ")}
+      </p>
 
       <h2 className="mt-10 text-xl font-bold text-foreground">
         制作のポイント

@@ -14,11 +14,20 @@ Yorikawa Aise (GitHub: packed7Ice) のポートフォリオ。https://packed7ice
 
 | 目的 | ファイル |
 |---|---|
-| 作品データ(全コンテンツ) | `src/data/works.ts` |
-| トップページ | `src/app/page.tsx` |
+| 作品データ(全コンテンツ。`image` = `public/works/` のスクショ) | `src/data/works.ts` |
+| プロフィール(日本語名/英語名)・スキル(`level`=練度1-5, 降順表示) | `src/data/profile.ts` |
+| トップページ(Profile/Skills/Works 3画面スナップ、脱カードデザイン) | `src/app/page.tsx` |
+| WIP(制作中)一覧ページ | `src/app/making/page.tsx` |
+| Tech Stack ページ(カテゴリ別カラム表示) | `src/app/site/page.tsx` |
 | 作品詳細(全 slug 共通) | `src/app/works/[slug]/page.tsx` |
 | コード抜粋表示 | `src/components/CodeBlock.tsx` (shiki, server component) |
-| 色・フォント | `src/app/globals.css` |
+| スクロール時フェードイン | `src/components/FadeIn.tsx` (IntersectionObserver) |
+| 色・フォント・スクロールスナップ | `src/app/globals.css` |
+
+- カード風 UI(枠線+角丸の箱)は使わないデザイン方針。
+- アイコンは GitHub アバター参照中。差し替えは `public/icon.png` を置き `profile.ts` の `avatar` を変更。
+- 作品スクショは `public/works/<slug>.png`(16:9 推奨)。
+- `src/components/WorkCard.tsx` は未使用(削除可)。
 
 ## 最頻タスク: 作品の追加
 
