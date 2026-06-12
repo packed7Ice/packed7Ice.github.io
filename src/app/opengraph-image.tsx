@@ -23,10 +23,11 @@ async function loadGoogleFont(family: string, text: string) {
 export default async function OgImage() {
   const text = `${profile.nameJa}${profile.nameEn}PORTFOLIO `;
   const notoSansJp = await loadGoogleFont("Noto+Sans+JP:wght@700", text);
-  const avatarBuffer = await fetch(profile.avatar).then((res) =>
-    res.arrayBuffer(),
-  );
-  const avatarSrc = `data:image/png;base64,${Buffer.from(avatarBuffer).toString("base64")}`;
+  const avatarResponse = await fetch(profile.avatar);
+  const avatarType =
+    avatarResponse.headers.get("content-type") ?? "image/png";
+  const avatarBuffer = await avatarResponse.arrayBuffer();
+  const avatarSrc = `data:${avatarType};base64,${Buffer.from(avatarBuffer).toString("base64")}`;
 
   return new ImageResponse(
     (
