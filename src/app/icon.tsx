@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/data/profile";
 
+export const dynamic = "force-static";
 export const size = { width: 256, height: 256 };
 export const contentType = "image/png";
 
