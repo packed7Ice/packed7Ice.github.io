@@ -4,7 +4,11 @@ import { wipWorks } from "@/data/works";
 
 export const metadata = {
   title: "WIP",
-  description: "制作中のプロジェクト一覧",
+  description: "よりかわあいせが現在制作中のプロジェクトの一覧です。",
+  openGraph: {
+    title: "WIP | 依川 愛瀬",
+    description: "よりかわあいせが現在制作中のプロジェクトの一覧です。",
+  },
 };
 
 export default function MakingPage() {

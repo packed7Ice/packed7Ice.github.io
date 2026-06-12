@@ -19,6 +19,10 @@ export async function generateMetadata({
   return {
     title: work?.title,
     description: work?.summary,
+    openGraph: {
+      title: work ? `${work.title} | 依川 愛瀬` : undefined,
+      description: work?.summary,
+    },
   };
 }
 

@@ -23,6 +23,12 @@ Yorikawa Aise (GitHub: packed7Ice) のポートフォリオ。https://packed7ice
 | コード抜粋表示 | `src/components/CodeBlock.tsx` (shiki, server component) |
 | スクロール時フェードイン | `src/components/FadeIn.tsx` (IntersectionObserver) |
 | 色・フォント・スクロールスナップ | `src/app/globals.css` |
+| OG 画像(アイコン+名前、ビルド時生成) | `src/app/opengraph-image.tsx` |
+| ファビコン(avatar から生成) | `src/app/icon.tsx` |
+
+OGP: 既定の説明文・theme-color は `layout.tsx`。各ページの概要は各 page の
+metadata / generateMetadata の `description` と `openGraph` を両方更新すること。
+OG 画像生成はビルド時に Google Fonts と GitHub アバターへアクセスする(要ネットワーク)。
 
 - カード風 UI(枠線+角丸の箱)は使わないデザイン方針。
 - アイコンは GitHub アバター参照中。差し替えは `public/icon.png` を置き `profile.ts` の `avatar` を変更。

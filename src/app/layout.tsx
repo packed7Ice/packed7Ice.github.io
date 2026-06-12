@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -15,22 +15,30 @@ const notoSansJP = Noto_Sans_JP({
   weight: ["400", "500", "700"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#1d50a2",
+};
+
+const SITE_NAME = "依川 愛瀬 | Portfolio";
+const SITE_DESCRIPTION = "よりかわあいせのホームページです。";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://packed7ice.github.io"),
   title: {
-    default: "Yorikawa Aise | Portfolio",
-    template: "%s | Yorikawa Aise",
+    default: SITE_NAME,
+    template: "%s | 依川 愛瀬",
   },
-  description:
-    "Yorikawa Aise のポートフォリオサイト。ウェブサイト開発・ゲーム制作などの成果物をまとめています。",
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Yorikawa Aise | Portfolio",
-    description:
-      "Yorikawa Aise のポートフォリオサイト。ウェブサイト開発・ゲーム制作などの成果物をまとめています。",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     url: "https://packed7ice.github.io",
-    siteName: "Yorikawa Aise | Portfolio",
+    siteName: SITE_NAME,
     locale: "ja_JP",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 

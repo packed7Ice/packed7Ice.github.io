@@ -3,7 +3,11 @@ import FadeIn from "@/components/FadeIn";
 
 export const metadata = {
   title: "Tech Stack",
-  description: "本ポートフォリオサイトの技術スタック",
+  description: "このホームページで使用している技術スタックの紹介です。",
+  openGraph: {
+    title: "Tech Stack | 依川 愛瀬",
+    description: "このホームページで使用している技術スタックの紹介です。",
+  },
 };
 
 type StackItem = { name: string; role: string };
