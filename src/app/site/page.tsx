@@ -1,5 +1,5 @@
-import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
+import TransitionLink from "@/components/TransitionLink";
 
 export const metadata = {
   title: "Tech Stack",
@@ -77,12 +77,12 @@ const stack: StackCategory[] = [
 export default function SitePage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-      <Link
+      <TransitionLink
         href="/"
         className="text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         ← トップに戻る
-      </Link>
+      </TransitionLink>
       <FadeIn>
         <p className="mt-10 text-xs font-bold uppercase tracking-[0.3em] text-muted-foreground/60">
           Tech Stack

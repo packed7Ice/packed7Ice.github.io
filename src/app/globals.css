@@ -22,10 +22,7 @@
     system-ui, sans-serif;
 }
 
-/* セクション単位のスクロールスナップ(トップページの各セクションが snap-start を持つ。
-   snap point を持たないページは通常スクロールのまま) */
 html {
-  scroll-snap-type: y proximity;
   scroll-behavior: smooth;
 }
 
@@ -40,6 +37,16 @@ body {
 ::selection {
   background: var(--accent);
   color: var(--primary);
+}
+
+/* ── ページ遷移タイルアニメーション ───────────────────── */
+@keyframes page-tile-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes page-tile-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 /* shiki code block */

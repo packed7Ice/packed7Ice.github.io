@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
-  /** 表示開始の遅延 (ms)。並んだ要素を順にフェードインさせる用 */
   delay?: number;
   className?: string;
 };
@@ -18,12 +17,9 @@ export default function FadeIn({ children, delay = 0, className = "" }: Props) {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
+        setVisible(entry.isIntersecting);
       },
-      { threshold: 0.15 },
+      { threshold: 0.08 },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -32,7 +28,7 @@ export default function FadeIn({ children, delay = 0, className = "" }: Props) {
   return (
     <div
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
       className={`transition-all duration-700 ease-out ${
         visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       } ${className}`}

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
+import TransitionLink from "@/components/TransitionLink";
 import { wipWorks } from "@/data/works";
 
 export const metadata = {
@@ -14,12 +14,12 @@ export const metadata = {
 export default function MakingPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
-      <Link
+      <TransitionLink
         href="/"
         className="text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         ← トップに戻る
-      </Link>
+      </TransitionLink>
       <FadeIn>
         <h1 className="mt-8 text-4xl font-bold text-foreground">WIP</h1>
         <p className="mt-3 text-base text-muted-foreground">
@@ -27,44 +27,43 @@ export default function MakingPage() {
         </p>
       </FadeIn>
       {wipWorks.length > 0 ? (
-        <div className="mt-12 space-y-12">
+        <div className="mt-12 space-y-14">
           {wipWorks.map((work, i) => (
             <FadeIn key={work.slug} delay={i * 150}>
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
                 {work.image && (
-                  <Link
-                    href={`/works/${work.slug}/`}
-                    className="block w-full shrink-0 sm:w-2/5"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={work.image}
-                      alt={`${work.title} のスクリーンショット`}
-                      className="aspect-video w-full rounded-lg object-cover object-top shadow-md"
-                    />
-                  </Link>
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={work.image}
+                    alt={`${work.title} のスクリーンショット`}
+                    className="aspect-video w-full rounded-lg object-cover object-top shadow-md sm:w-2/5 sm:shrink-0"
+                  />
                 )}
                 <div className="min-w-0">
-                  <h2 className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
-                    <Link
-                      href={`/works/${work.slug}/`}
-                      className="transition-colors hover:text-primary"
-                    >
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
                       {work.title}
-                    </Link>
-                  </h2>
+                    </h2>
+                    <span className="shrink-0 rounded-full bg-accent/40 px-2.5 py-0.5 text-xs font-medium text-primary">
+                      WIP
+                    </span>
+                  </div>
                   <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {work.summary}
                   </p>
                   <p className="mt-2.5 text-xs text-muted-foreground/70 sm:text-sm">
                     {work.tech.join(" / ")}
                   </p>
-                  <Link
-                    href={`/works/${work.slug}/`}
-                    className="mt-3 inline-block text-sm text-primary underline-offset-4 hover:underline"
-                  >
-                    詳しく見る →
-                  </Link>
+                  {work.url && (
+                    <a
+                      href={work.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-block text-sm text-primary underline-offset-4 hover:underline"
+                    >
+                      サイトを見る →
+                    </a>
+                  )}
                 </div>
               </div>
             </FadeIn>

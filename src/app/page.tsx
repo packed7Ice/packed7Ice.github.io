@@ -1,10 +1,20 @@
-import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
+import CodeBlock from "@/components/CodeBlock";
+import ScrollController, { type SectionMeta } from "@/components/ScrollController";
+import TransitionLink from "@/components/TransitionLink";
 import { profile, skillCategories } from "@/data/profile";
 import { releasedWorks } from "@/data/works";
 
+/**
+ * 各セクションを viewport ぴったりの高さにして、ページスクロールを
+ * ScrollController に完全に委ねる。
+ * overflow-hidden で内容がはみ出してもセクション境界をクリップ。
+ */
 const SECTION =
-  "flex min-h-[calc(100dvh-3.5rem)] snap-start scroll-mt-14 items-center";
+  "flex h-[calc(100dvh-3.5rem)] scroll-mt-14 items-center overflow-hidden md:h-screen md:scroll-mt-0";
+
+const getWorkId = (i: number) =>
+  i === 0 ? "works" : `work-${releasedWorks[i].slug}`;
 
 function LevelDots({ level }: { level: number }) {
   return (
@@ -22,6 +32,17 @@ function LevelDots({ level }: { level: number }) {
 }
 
 export default function Home() {
+  const scrollNavSections: SectionMeta[] = [
+    { id: "profile", label: "Profile", nextLabel: "Skills",  nextId: "skills" },
+    { id: "skills",  label: "Skills",  nextLabel: "Works",   nextId: "works"  },
+    ...releasedWorks.map((_, i) => ({
+      id:        getWorkId(i),
+      label:     i === 0 ? "Works" : `Works ${String(i + 1).padStart(2, "0")}`,
+      nextLabel: i < releasedWorks.length - 1 ? "次の作品" : null,
+      nextId:    i < releasedWorks.length - 1 ? getWorkId(i + 1) : null,
+    })),
+  ];
+
   return (
     <>
       {/* 1. Profile */}
@@ -29,9 +50,9 @@ export default function Home() {
         id="profile"
         className={`${SECTION} bg-gradient-to-b from-surface to-background`}
       >
-        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-5xl overflow-hidden px-4 sm:px-6">
           <FadeIn>
-            <div className="flex flex-col items-center gap-10 text-center sm:flex-row sm:gap-14 sm:text-left">
+            <div className="flex flex-col items-center gap-10 py-6 text-center sm:flex-row sm:gap-14 sm:text-left">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={profile.avatar}
@@ -78,16 +99,16 @@ export default function Home() {
 
       {/* 2. Skills */}
       <section id="skills" className={SECTION}>
-        <div className="mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
+        <div className="mx-auto w-full max-w-4xl overflow-hidden px-4 text-center sm:px-6">
           <FadeIn>
-            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
+            <h2 className="pt-6 text-3xl font-bold text-foreground sm:text-4xl">
               Skills
             </h2>
             <p className="mt-3 text-base text-muted-foreground">
               使用できる技術(各カテゴリ内は習得練度順)
             </p>
           </FadeIn>
-          <div className="mx-auto mt-12 grid w-fit gap-x-16 gap-y-10 text-left sm:grid-cols-3">
+          <div className="mx-auto mt-12 grid w-fit gap-x-16 gap-y-10 pb-6 text-left sm:grid-cols-3">
             {skillCategories.map((category, i) => (
               <FadeIn key={category.name} delay={i * 150}>
                 <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/70">
@@ -113,68 +134,147 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Works */}
-      <section id="works" className={`${SECTION} bg-surface`}>
-        <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6">
-          <FadeIn>
-            <h2 className="text-3xl font-bold text-foreground sm:text-4xl">
-              Works
-            </h2>
-            <p className="mt-3 text-base text-muted-foreground">主な制作物</p>
-          </FadeIn>
-          <div className="mt-10 space-y-10">
-            {releasedWorks.map((work, i) => (
-              <FadeIn key={work.slug} delay={i * 150}>
-                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-                  {work.image && (
-                    <Link
-                      href={`/works/${work.slug}/`}
-                      className="block w-full shrink-0 sm:w-2/5"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={work.image}
-                        alt={`${work.title} のスクリーンショット`}
-                        className="aspect-video w-full rounded-lg object-cover object-top shadow-md transition-transform hover:scale-[1.02]"
-                      />
-                    </Link>
-                  )}
-                  <div className="min-w-0">
-                    <h3 className="text-xl font-bold leading-snug text-foreground sm:text-2xl">
-                      <Link
-                        href={`/works/${work.slug}/`}
-                        className="transition-colors hover:text-primary"
-                      >
-                        {work.title}
-                      </Link>
-                    </h3>
-                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                      {work.summary}
-                    </p>
-                    <p className="mt-2.5 text-xs text-muted-foreground/70 sm:text-sm">
-                      {work.tech.join(" / ")}
-                    </p>
-                    <Link
-                      href={`/works/${work.slug}/`}
-                      className="mt-3 inline-block text-sm text-primary underline-offset-4 hover:underline"
-                    >
-                      詳しく見る →
-                    </Link>
+      {/* 3. Works — 作品ごとに 1 セクション（viewport 固定高さ） */}
+      {releasedWorks.map((work, i) => (
+        <section
+          key={work.slug}
+          id={getWorkId(i)}
+          className="h-[calc(100dvh-3.5rem)] scroll-mt-14 md:flex md:h-screen md:scroll-mt-0"
+        >
+          {/* Desktop: スティッキー左パネル（画像カード・16:9） */}
+          <div className="hidden md:block md:w-1/2 md:shrink-0">
+            <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-surface/40 p-7">
+              {work.image && (
+                <FadeIn className="w-full">
+                  <div className="relative w-full overflow-hidden rounded-2xl border-[3px] border-white shadow-2xl shadow-primary/10">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={work.image}
+                      alt={`${work.title} のスクリーンショット`}
+                      className="aspect-video w-full object-cover object-top"
+                    />
+                    <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_60px_rgba(255,255,255,0.45)]" />
                   </div>
+                </FadeIn>
+              )}
+            </div>
+          </div>
+
+          {/*
+           * 右パネル: overflow-y-auto で内容が長い場合は内部スクロール。
+           * ScrollController の findInnerScrollable がこのコンテナを検出し、
+           * 上端 / 下端に達したときのみセクション遷移トリガーに使う。
+           */}
+          <div className="w-full overflow-y-auto px-6 py-16 md:w-1/2 md:py-24 md:pl-12 md:pr-8">
+            <FadeIn>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
+                Works&ensp;
+                {String(i + 1).padStart(2, "0")}&thinsp;/&thinsp;
+                {String(releasedWorks.length).padStart(2, "0")}
+              </p>
+            </FadeIn>
+
+            {/* モバイル用画像カード */}
+            {work.image && (
+              <FadeIn delay={100} className="mt-4 md:hidden">
+                <div className="relative overflow-hidden rounded-xl border-[3px] border-white shadow-lg shadow-primary/10">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={work.image}
+                    alt={`${work.title} のスクリーンショット`}
+                    className="aspect-video w-full object-cover object-top"
+                  />
+                  <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_40px_rgba(255,255,255,0.4)]" />
                 </div>
               </FadeIn>
-            ))}
+            )}
+
+            <FadeIn delay={150}>
+              <h3 className="mt-5 break-words text-4xl font-black leading-tight text-foreground sm:text-5xl">
+                {work.title}
+              </h3>
+            </FadeIn>
+
+            <FadeIn delay={250}>
+              <p className="mt-5 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                {work.description}
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={350}>
+              <h4 className="mt-7 text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
+                制作のポイント
+              </h4>
+              <ul className="mt-3 space-y-2.5">
+                {work.points.map((point) => (
+                  <li
+                    key={point}
+                    className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
+                  >
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                    {point}
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
+
+            <FadeIn delay={450}>
+              <div className="mt-6 flex flex-wrap gap-5">
+                {work.url && (
+                  <a
+                    href={work.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary underline-offset-4 hover:underline"
+                  >
+                    公式サイトを見る →
+                  </a>
+                )}
+                {work.repo && (
+                  <a
+                    href={work.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary underline-offset-4 hover:underline"
+                  >
+                    ソースコードを見る →
+                  </a>
+                )}
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground/60 sm:text-sm">
+                {work.tech.join(" / ")}
+              </p>
+            </FadeIn>
+
+            {work.snippets && work.snippets.length > 0 && (
+              <FadeIn delay={500} className="mt-8">
+                <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
+                  コード抜粋
+                </h4>
+                <div className="mt-4 space-y-8">
+                  {work.snippets.map((snippet) => (
+                    <CodeBlock key={snippet.title} snippet={snippet} />
+                  ))}
+                </div>
+              </FadeIn>
+            )}
+
+            {i === releasedWorks.length - 1 && (
+              <FadeIn delay={550} className="mt-10 pb-12">
+                <TransitionLink
+                  href="/making/"
+                  className="text-sm text-primary underline-offset-4 hover:underline"
+                >
+                  制作中のプロジェクト (WIP) を見る →
+                </TransitionLink>
+              </FadeIn>
+            )}
           </div>
-          <FadeIn delay={450} className="mt-10 text-center">
-            <Link
-              href="/making/"
-              className="text-sm text-primary underline-offset-4 hover:underline"
-            >
-              制作中のプロジェクト (WIP) を見る →
-            </Link>
-          </FadeIn>
-        </div>
-      </section>
+        </section>
+      ))}
+
+      {/* スクロール制御 + 進捗バー UI */}
+      <ScrollController sections={scrollNavSections} />
     </>
   );
 }
