@@ -4,18 +4,22 @@ import { useEffect, useRef, useState } from "react";
 
 export type SectionMeta = {
   id: string;
-  label: string;       // このセクション自身の名前（上方向遷移時に表示）
+  label: string; // このセクション自身の名前（上方向遷移時に表示）
   nextLabel: string | null; // 次セクションの名前（下方向遷移時に表示）
   nextId: string | null;
 };
 
 /** ホイール累積のしきい値（大きいほど余裕が増える） */
-const THRESHOLD = 280;
+const THRESHOLD = 1500;
 const COOLDOWN_MS = 1050;
 const EDGE_PX = 10;
 
-export default function ScrollController({ sections }: { sections: SectionMeta[] }) {
-  const [progress, setProgress] = useState(0);          // 0–100
+export default function ScrollController({
+  sections,
+}: {
+  sections: SectionMeta[];
+}) {
+  const [progress, setProgress] = useState(0); // 0–100
   const [direction, setDirection] = useState<"down" | "up" | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -40,11 +44,16 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
      * イベントターゲットから最も近い内部スクロール可能コンテナを返す。
      * html / body は除外。
      */
-    const findInnerScrollable = (target: EventTarget | null): Element | null => {
+    const findInnerScrollable = (
+      target: EventTarget | null,
+    ): Element | null => {
       let el = target as Element | null;
       while (el && el !== document.documentElement && el !== document.body) {
         const ov = getComputedStyle(el).overflowY;
-        if ((ov === "auto" || ov === "scroll") && el.scrollHeight > el.clientHeight + 2) {
+        if (
+          (ov === "auto" || ov === "scroll") &&
+          el.scrollHeight > el.clientHeight + 2
+        ) {
           return el;
         }
         el = el.parentElement;
@@ -62,7 +71,10 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
     };
 
     const reset = () => {
-      if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       accRef.current = 0;
       setProgress(0);
       setDirection(null);
@@ -81,13 +93,17 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
 
     const handleWheel = (e: WheelEvent) => {
       // クールダウン中はページスクロールを止めるのみ
-      if (cooldownRef.current) { e.preventDefault(); return; }
+      if (cooldownRef.current) {
+        e.preventDefault();
+        return;
+      }
 
       // 内部スクロールコンテナが境界に達していなければ自然スクロールに委ねる
       const inner = findInnerScrollable(e.target);
       if (inner) {
         const down = e.deltaY > 0;
-        const atBot = inner.scrollTop >= inner.scrollHeight - inner.clientHeight - EDGE_PX;
+        const atBot =
+          inner.scrollTop >= inner.scrollHeight - inner.clientHeight - EDGE_PX;
         const atTop = inner.scrollTop <= EDGE_PX;
         if ((down && !atBot) || (!down && !atTop)) {
           reset();
@@ -107,11 +123,13 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
       if (e.deltaY > 0 && sections[idx]?.nextId) {
         accRef.current = Math.min(accRef.current + e.deltaY, THRESHOLD);
         scheduleUpdate((accRef.current / THRESHOLD) * 100, "down");
-        if (accRef.current >= THRESHOLD) navigateTo(sections[idx].nextId!, idx + 1);
+        if (accRef.current >= THRESHOLD)
+          navigateTo(sections[idx].nextId!, idx + 1);
       } else if (e.deltaY < 0 && idx > 0) {
         accRef.current = Math.max(accRef.current + e.deltaY, -THRESHOLD);
         scheduleUpdate((Math.abs(accRef.current) / THRESHOLD) * 100, "up");
-        if (accRef.current <= -THRESHOLD) navigateTo(sections[idx - 1].id, idx - 1);
+        if (accRef.current <= -THRESHOLD)
+          navigateTo(sections[idx - 1].id, idx - 1);
       } else {
         reset();
       }
@@ -130,7 +148,8 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
       const inner = findInnerScrollable(e.target);
       if (inner) {
         const down = delta > 0;
-        const atBot = inner.scrollTop >= inner.scrollHeight - inner.clientHeight - EDGE_PX;
+        const atBot =
+          inner.scrollTop >= inner.scrollHeight - inner.clientHeight - EDGE_PX;
         const atTop = inner.scrollTop <= EDGE_PX;
         if ((down && !atBot) || (!down && !atTop)) return;
       }
@@ -162,8 +181,8 @@ export default function ScrollController({ sections }: { sections: SectionMeta[]
     direction === "down"
       ? current?.nextLabel
       : activeIndex > 0
-      ? sections[activeIndex - 1].label
-      : null;
+        ? sections[activeIndex - 1].label
+        : null;
   const arrow = direction === "down" ? "↓" : "↑";
 
   if (!direction || progress <= 0) return null;
