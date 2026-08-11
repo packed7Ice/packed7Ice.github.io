@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/yorikawaaise
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://yorikawaaise.net
+  * I am yorikawaaise (https://keybase.io/yorikawaaise) on keybase.
+  * I have a public key ASC5WKBG2b_sAksrizsxlPAluctyFYPmUfQ4sCGwuoAGSgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120b958a046d9bfec024b2b8b3b3194f025b9cb721583e651f438b021b0ba80064a0a",
+      "host": "keybase.io",
+      "kid": "0120b958a046d9bfec024b2b8b3b3194f025b9cb721583e651f438b021b0ba80064a0a",
+      "uid": "c04dedb413cf26a85326ee8bd866cc19",
+      "username": "yorikawaaise"
+    },
+    "merkle_root": {
+      "ctime": 1786431217,
+      "hash": "d417a8674d3b8a537ad6a14026becba0931e1698b305d719c309dd44da9496d92c050981f1f01d87ffc73510e6c1df1937fa57f62ddcdefe28b493d69d95e78a",
+      "hash_meta": "ba4e47bfa5542cdf97cc5a7c37219c8a292493d6f7c817a603208137763b5cfc",
+      "seqno": 27720895
+    },
+    "service": {
+      "entropy": "JaHof8nrs2mOR9dQkkOcFPTF",
+      "hostname": "yorikawaaise.net",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.6.3"
+  },
+  "ctime": 1786431384,
+  "expire_in": 504576000,
+  "prev": "7561b0f67a087ce817fd37dd3e92776bd6bb0d95d9806c83f2234bf9a1d19348",
+  "seqno": 6,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEguVigRtm/7AJLK4s7MZTwJbnLchWD5lH0OLAhsLqABkoKp3BheWxvYWTESpcCBsQgdWGw9noIfOgX/TfdPpJ3a9a7DZXZgGyD8iNL+aHRk0jEIFlLoBqES0YyMdocuApRfXw6fOtYgkio/NjJCl9EgXEnAgHCo3NpZ8RAKeK3VKrMSoToQE2vgFcpzgom/NImHVmllQlwme4gB03z2zkRCP4MRr+PG/QGzrIEZ1wUvsS/saeo2mt4ffuWDqhzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIFWm61Mz5LZlSFvO9vHYUXBOHDhKa65PqMdVQua8xkuto3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/yorikawaaise
+
+==================================================================
