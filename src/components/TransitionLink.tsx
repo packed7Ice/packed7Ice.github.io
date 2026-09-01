@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import type { AnchorHTMLAttributes } from "react";
 
 /** タイルが全て表示し終わってからページ遷移するまでの待機時間 */
@@ -18,6 +18,7 @@ export default function TransitionLink({
   ...rest
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // ハッシュリンク（/#skills 等）・外部 URL はそのまま通す
@@ -32,6 +33,10 @@ export default function TransitionLink({
 
     e.preventDefault();
     onClick?.(e);
+
+    // 現在と同じページへのリンクは pathname が変化せず遷移完了を検知できず、
+    // オーバーレイのタイルが画面を覆ったまま残ってしまうため、遷移自体を行わない
+    if (href === pathname) return;
 
     // オーバーレイにタイル登場を指示
     window.dispatchEvent(new CustomEvent("page-transition-start"));
